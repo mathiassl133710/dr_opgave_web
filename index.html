@@ -116,6 +116,7 @@
                             <th>Artist</th>
                             <th>Duration</th>
                             <th>Year</th>
+                            <th v-if="role === 'admin'"></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -124,6 +125,9 @@
                             <td class="record-artist">{{ record.artist }}</td>
                             <td>{{ formatDuration(record.duration) }}</td>
                             <td>{{ record.publicationYear }}</td>
+                            <td v-if="role === 'admin'">
+                                <button @click="deleteRecord(record.id)" class="btn btn-danger btn-sm btn-delete">Delete</button>
+                            </td>
                         </tr>
                     </tbody>
                 </table>

@@ -89,6 +89,16 @@ createApp({
                 this.loading = false;
             }
         },
+        async deleteRecord(id) {
+            try {
+                await axios.delete(`${API_BASE}/api/musicrecords/${id}`, {
+                    headers: { Authorization: `Bearer ${this.token}` },
+                });
+                this.fetchRecords();
+            } catch {
+                this.error = 'Could not delete record.';
+            }
+        },
         formatDuration(seconds) {
             const m = Math.floor(seconds / 60);
             const s = seconds % 60;
