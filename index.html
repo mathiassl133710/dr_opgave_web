@@ -120,15 +120,30 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="record in records" :key="record.id" class="record-row">
-                            <td class="record-title">{{ record.title }}</td>
-                            <td class="record-artist">{{ record.artist }}</td>
-                            <td>{{ formatDuration(record.duration) }}</td>
-                            <td>{{ record.publicationYear }}</td>
-                            <td v-if="role === 'admin'">
-                                <button @click="deleteRecord(record.id)" class="btn btn-danger btn-sm btn-delete">Delete</button>
-                            </td>
-                        </tr>
+                        <template v-for="record in records" :key="record.id">
+                            <!-- Edit row -->
+                            <tr v-if="editingId === record.id" class="record-row">
+                                <td><input v-model="editData.title" class="form-control form-control-sm" id="edit-title" /></td>
+                                <td><input v-model="editData.artist" class="form-control form-control-sm" id="edit-artist" /></td>
+                                <td><input v-model.number="editData.duration" type="number" class="form-control form-control-sm" id="edit-duration" /></td>
+                                <td><input v-model.number="editData.publicationYear" type="number" class="form-control form-control-sm" id="edit-year" /></td>
+                                <td>
+                                    <button @click="saveEdit(record.id)" class="btn btn-success btn-sm btn-save me-1">Save</button>
+                                    <button @click="cancelEdit" class="btn btn-secondary btn-sm btn-cancel">Cancel</button>
+                                </td>
+                            </tr>
+                            <!-- Normal row -->
+                            <tr v-else class="record-row">
+                                <td class="record-title">{{ record.title }}</td>
+                                <td class="record-artist">{{ record.artist }}</td>
+                                <td>{{ formatDuration(record.duration) }}</td>
+                                <td>{{ record.publicationYear }}</td>
+                                <td v-if="role === 'admin'">
+                                    <button @click="startEdit(record)" class="btn btn-warning btn-sm btn-edit me-1">Edit</button>
+                                    <button @click="deleteRecord(record.id)" class="btn btn-danger btn-sm btn-delete">Delete</button>
+                                </td>
+                            </tr>
+                        </template>
                     </tbody>
                 </table>
             </div>

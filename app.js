@@ -18,6 +18,8 @@ createApp({
             newRecord: { title: '', artist: '', duration: null, publicationYear: null },
             addError: null,
             addSuccess: false,
+            editingId: null,
+            editData: {},
         };
     },
     mounted() {
@@ -87,6 +89,26 @@ createApp({
                 }
             } finally {
                 this.loading = false;
+            }
+        },
+        startEdit(record) {
+            this.editingId = record.id;
+            this.editData = { ...record };
+        },
+        cancelEdit() {
+            this.editingId = null;
+            this.editData = {};
+        },
+        async saveEdit(id) {
+            try {
+                await axios.put(`${API_BASE}/api/musicrecords/${id}`, this.editData, {
+                    headers: { Authorization: `Bearer ${this.token}` },
+                });
+                this.editingId = null;
+                this.editData = {};
+                this.fetchRecords();
+            } catch {
+                this.error = 'Could not update record.';
             }
         },
         async deleteRecord(id) {
