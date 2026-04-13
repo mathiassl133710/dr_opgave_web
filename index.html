@@ -73,6 +73,30 @@
                 </div>
             </div>
 
+            <!-- Add record form (admin only) -->
+            <div v-if="role === 'admin'" class="card p-3 mb-4">
+                <h5 class="mb-3">Add Record</h5>
+                <div v-if="addError" class="alert alert-danger" id="add-error">{{ addError }}</div>
+                <div v-if="addSuccess" class="alert alert-success" id="add-success">Record added!</div>
+                <div class="row g-2">
+                    <div class="col-sm-3">
+                        <input v-model="newRecord.title" type="text" id="add-title" class="form-control" placeholder="Title" />
+                    </div>
+                    <div class="col-sm-3">
+                        <input v-model="newRecord.artist" type="text" id="add-artist" class="form-control" placeholder="Artist" />
+                    </div>
+                    <div class="col-sm-2">
+                        <input v-model.number="newRecord.duration" type="number" id="add-duration" class="form-control" placeholder="Duration (sec)" />
+                    </div>
+                    <div class="col-sm-2">
+                        <input v-model.number="newRecord.publicationYear" type="number" id="add-year" class="form-control" placeholder="Year" />
+                    </div>
+                    <div class="col-sm-2">
+                        <button @click="addRecord" id="btn-add" class="btn btn-success w-100">Add</button>
+                    </div>
+                </div>
+            </div>
+
             <div v-if="loading" class="text-center my-5">
                 <div class="spinner-border" role="status">
                     <span class="visually-hidden">Loading...</span>

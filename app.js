@@ -7,6 +7,7 @@ createApp({
         return {
             token: localStorage.getItem('token') || null,
             username: localStorage.getItem('username') || '',
+            role: localStorage.getItem('role') || '',
             password: '',
             loginError: null,
             records: [],
@@ -14,6 +15,9 @@ createApp({
             error: null,
             searchTitle: '',
             searchArtist: '',
+            newRecord: { title: '', artist: '', duration: null, publicationYear: null },
+            addError: null,
+            addSuccess: false,
         };
     },
     mounted() {
@@ -30,8 +34,10 @@ createApp({
                     password: this.password,
                 });
                 this.token = response.data.token;
+                this.role = response.data.role;
                 localStorage.setItem('token', this.token);
                 localStorage.setItem('username', this.username);
+                localStorage.setItem('role', this.role);
                 this.password = '';
                 this.fetchRecords();
             } catch {
@@ -41,9 +47,25 @@ createApp({
         logout() {
             this.token = null;
             this.username = '';
+            this.role = '';
             this.records = [];
             localStorage.removeItem('token');
             localStorage.removeItem('username');
+            localStorage.removeItem('role');
+        },
+        async addRecord() {
+            this.addError = null;
+            this.addSuccess = false;
+            try {
+                await axios.post(`${API_BASE}/api/musicrecords`, this.newRecord, {
+                    headers: { Authorization: `Bearer ${this.token}` },
+                });
+                this.newRecord = { title: '', artist: '', duration: null, publicationYear: null };
+                this.addSuccess = true;
+                this.fetchRecords();
+            } catch (err) {
+                this.addError = err.response?.data || 'Could not add record.';
+            }
         },
         async fetchRecords() {
             this.loading = true;
