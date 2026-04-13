@@ -14,6 +14,29 @@
     <div id="app" class="container mt-4">
         <h1 class="mb-4">DR Music Records</h1>
 
+        <div class="row g-2 mb-4">
+            <div class="col-sm-5">
+                <input
+                    v-model="searchTitle"
+                    @input="fetchRecords"
+                    type="text"
+                    id="search-title"
+                    class="form-control"
+                    placeholder="Search by title..."
+                />
+            </div>
+            <div class="col-sm-5">
+                <input
+                    v-model="searchArtist"
+                    @input="fetchRecords"
+                    type="text"
+                    id="search-artist"
+                    class="form-control"
+                    placeholder="Search by artist..."
+                />
+            </div>
+        </div>
+
         <div v-if="loading" class="text-center my-5">
             <div class="spinner-border" role="status">
                 <span class="visually-hidden">Loading...</span>
